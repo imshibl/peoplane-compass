@@ -1,15 +1,15 @@
 import 'package:bloc/bloc.dart';
-import 'package:compass/features/auth/models/auth_success_model.dart';
+import 'package:compass/features/auth/bloc/auth_event.dart';
+import 'package:compass/features/auth/bloc/auth_state.dart';
 import 'package:compass/features/auth/services/auth_services.dart';
-import 'package:meta/meta.dart';
 
-part 'auth_event.dart';
-part 'auth_state.dart';
+// part 'auth_event.dart';
+// part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final AuthServices _authServices;
+  final IAuthServices _authServices;
 
-  AuthBloc(this._authServices) : super(AuthInitial()) {
+  AuthBloc(this._authServices) : super(AuthState.initial()) {
     on<AuthEvent>((event, emit) async {
       if (event is GuestLogin) {
         await _guestLogin(event, emit);
@@ -18,15 +18,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _guestLogin(GuestLogin event, Emitter<AuthState> emit) async {
-    emit(AuthLoading());
+    emit(AuthState.loading());
     final result = await _authServices.guestLogin();
     result.fold(
       (failure) {
-        emit(AuthError(error: failure.message));
+        emit(AuthState.error(failure.message));
         print("Guest Login Failed");
       },
       (success) {
-        emit(AuthSuccess(data: success));
+        emit(AuthState.success(success));
         print("Guest Login Success");
         print(success.accessToken);
       },

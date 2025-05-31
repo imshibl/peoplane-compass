@@ -1,4 +1,6 @@
 import 'package:compass/features/auth/bloc/auth_bloc.dart';
+import 'package:compass/features/auth/bloc/auth_event.dart';
+import 'package:compass/features/auth/bloc/auth_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,7 +18,6 @@ class AuthView extends StatelessWidget {
               Text("Guest Login"),
               BlocConsumer<AuthBloc, AuthState>(
                 listener: (context, state) {
-                  // TODO: implement listener
                   if (state is AuthSuccess) {
                     print(state.data.accessToken);
                   }

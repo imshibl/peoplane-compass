@@ -6,7 +6,7 @@ final getIt = GetIt.instance;
 
 void setupLocator() {
   getIt.registerLazySingleton<Dio>(() => Dio());
-  getIt.registerLazySingleton<AuthServices>(
+  getIt.registerLazySingleton<IAuthServices>(
     () => AuthServices(dio: getIt<Dio>()),
   );
 }

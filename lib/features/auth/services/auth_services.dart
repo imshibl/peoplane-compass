@@ -4,11 +4,16 @@ import 'package:compass/utils/consts/urls.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
-class AuthServices {
+abstract class IAuthServices {
+  Future<Either<Failure, AuthSuccessModel>> guestLogin();
+}
+
+class AuthServices implements IAuthServices {
   final Dio dio;
 
   AuthServices({required this.dio});
 
+  @override
   Future<Either<Failure, AuthSuccessModel>> guestLogin() async {
     String url = "${AppUrls.baseUrl}user-auth/guest-auth";
     try {
@@ -21,11 +26,4 @@ class AuthServices {
       return Left(Failure(message: e.toString()));
     }
   }
-  // Future<void> loginWithMobile({required String mobile}) async {
-  //   await Future.delayed(const Duration(seconds: 1));
-  // }
-
-  // Future<void> logout() async {
-  //   await Future.delayed(const Duration(seconds: 1));
-  // }
 }
