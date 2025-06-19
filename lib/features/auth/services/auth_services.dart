@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:compass/features/auth/models/auth_success_model.dart';
 import 'package:compass/utils/common/failure.dart';
 import 'package:compass/utils/consts/urls.dart';
@@ -20,8 +22,10 @@ class AuthServices implements IAuthServices {
       final request = await dio.post(url);
       return Right(AuthSuccessModel.fromJson(request.data));
     } on DioException catch (e) {
-      String error = e.response!.data['detail'] ?? "Something went wrong!";
-      return Left(Failure(message: error));
+      String error = e.response?.data['detail'] ?? "Something went wrong!";
+      log(error);
+
+      return Left(Failure(message: "Something went wrong!"));
     } catch (e) {
       return Left(Failure(message: e.toString()));
     }
